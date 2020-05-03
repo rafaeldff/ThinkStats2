@@ -13,13 +13,29 @@ import sys
 import nsfg
 import thinkstats2
 
+def ReadFemResp():
+    return nsfg.ReadFemResp()
 
 def main(script):
     """Tests the functions in this module.
 
     script: string script name
     """
-    print('%s: All tests passed.' % script)
+    print('Running')
+    resp = ReadFemResp()
+    print(resp.pregnum.value_counts().sort_index())
+
+    preg = nsfg.ReadFemPreg()
+    pm = nsfg.MakePregMap(preg)
+
+    print('checking counts')
+    for i, r in resp.caseid.head().iteritems():
+        if resp.pregnum[i] != len(pm[r]):
+            print([r, resp[resp.caseid == r].pregnum.iloc[0], len(pm[r])])
+
+
+
+    #print('%s: All tests passed.' % script)
 
 
 if __name__ == '__main__':
